@@ -4,35 +4,36 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TrainingsDAO {
 
     @Upsert
-    fun addTraining(event: Event)
+    suspend fun addTraining(event: Event)
 
     @Upsert
-    fun addPayment(payment: Payment)
+    suspend fun addPayment(payment: Payment)
 
     @Upsert
-    fun addBodyMeasurements(bodyMeasurements: BodyMeasurements)
+    suspend fun addBodyMeasurements(bodyMeasurements: BodyMeasurements)
 
     @Delete
-    fun deleteTraining(event: Event)
+    suspend fun deleteTraining(event: Event)
 
     @Delete
-    fun deletePayment(payment: Payment)
+    suspend fun deletePayment(payment: Payment)
 
     @Delete
-    fun deleteBodyMeasurements(bodyMeasurements: BodyMeasurements)
+    suspend fun deleteBodyMeasurements(bodyMeasurements: BodyMeasurements)
 
     @Query("SELECT * FROM Event")
-    fun getAllTrainings() : List<Event>
+    fun getAllTrainings() :Flow<List<Event>>
 
     @Query("SELECT * FROM Payment")
-    fun getAllPayments() : List<Payment>
+    fun getAllPayments() : Flow<List<Payment>>
 
     @Query("SELECT * FROM BodyMeasurements")
-    fun getAllBodyMeasurements() : List<BodyMeasurements>
+    fun getAllBodyMeasurements() : Flow<List<BodyMeasurements>>
 
 }
