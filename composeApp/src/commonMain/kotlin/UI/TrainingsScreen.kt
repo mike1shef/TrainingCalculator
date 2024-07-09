@@ -30,7 +30,6 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import database.EventStatus
 import database.generateEvents
 
 class TrainingsScreen : Screen {
@@ -61,7 +60,7 @@ class TrainingsScreen : Screen {
         event: Event
     ){
         var isSelected by remember { mutableStateOf(false) }
-        var status by remember { mutableStateOf(event.status) }
+        var status by remember { mutableStateOf(event.isPaid) }
 
         Row(
             Modifier
@@ -88,15 +87,13 @@ class TrainingsScreen : Screen {
                 )
             }
 
-            when (status) {
-                EventStatus.UPCOMING -> IconButton(
-                    onClick = { status = EventStatus.PAID
-                    }) {
+            if (!status) { IconButton(
+                onClick = { status = true }) {
                     Icon(Icons.Filled.DateRange, contentDescription = "Upcoming visit" )
-                }
-                EventStatus.PAID-> IconButton(onClick = { /*TODO*/ }) {
-                    Icon(Icons.Filled.Done, contentDescription = "Done")
-                }
+            }
+                } else { IconButton(onClick = { /*TODO*/ }) {
+                Icon(Icons.Filled.Done, contentDescription = "Done")
+            }
             }
         }
     }
