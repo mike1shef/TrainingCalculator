@@ -1,3 +1,6 @@
+package UI
+
+import database.Event
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,7 +16,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,8 +30,10 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import database.EventStatus
+import database.generateEvents
 
-class Trainings : Screen {
+class TrainingsScreen : Screen {
 
     @Composable
     override fun Content() {
@@ -39,7 +43,7 @@ class Trainings : Screen {
         ){
             Column {
                 Schedule(generateEvents())
-                }
+            }
         }
     }
 
@@ -86,12 +90,9 @@ class Trainings : Screen {
 
             when (status) {
                 EventStatus.UPCOMING -> IconButton(
-                    onClick = { status = EventStatus.FINISHED
+                    onClick = { status = EventStatus.PAID
                     }) {
                     Icon(Icons.Filled.DateRange, contentDescription = "Upcoming visit" )
-                }
-                EventStatus.FINISHED -> IconButton(onClick = {/*TODO*/ }) {
-                    Icon(Icons.Filled.Send, contentDescription = "Tap to Pay")
                 }
                 EventStatus.PAID-> IconButton(onClick = { /*TODO*/ }) {
                     Icon(Icons.Filled.Done, contentDescription = "Done")
@@ -99,28 +100,4 @@ class Trainings : Screen {
             }
         }
     }
-}
-
-
-data class Event (
-    val name : String = "Training",
-    var status: EventStatus = EventStatus.UPCOMING,
-    val date : String = "12/12/2023"
-)
-
-fun generateEvents() : List<Event>{
-    return listOf(
-        Event(status = EventStatus.UPCOMING, date = "31/06/2024"),
-        Event(status = EventStatus.UPCOMING, date = "29/06/2024"),
-        Event(status = EventStatus.FINISHED, date = "23/06/2024"),
-        Event(status = EventStatus.FINISHED, date = "21/06/2024"),
-        Event(status = EventStatus.PAID, date = "15/06/2024"),
-        Event(status = EventStatus.PAID, date = "14/06/2024")
-    )
-}
-
-enum class EventStatus {
-    UPCOMING,
-    FINISHED,
-    PAID
 }
