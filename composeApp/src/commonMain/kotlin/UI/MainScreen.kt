@@ -1,5 +1,6 @@
 package UI
 
+import MainViewModel
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,17 +26,20 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import database.model.Event
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
 import trainingcalculator.composeapp.generated.resources.Res
 import trainingcalculator.composeapp.generated.resources.cardio_load_24px
 import trainingcalculator.composeapp.generated.resources.payments_24px
 import trainingcalculator.composeapp.generated.resources.straighten_24px
 
-class MainScreen : Screen {
+class MainScreen () : Screen {
     private val MAIN_MENU = listOf("Trainings", "Body", "Payments")
 
     @Composable
     override fun Content() {
+        val viewModel = koinViewModel<MainViewModel>()
         Scaffold() {
             Column(
                 modifier = Modifier
@@ -49,14 +53,14 @@ class MainScreen : Screen {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    MainScreenButtons()
+                    MainScreenButtons(viewModel)
                 }
             }
         }
     }
 
     @Composable
-    fun MainScreenContent(menuItems: List<String>) {
+    fun MainScreenContent(menuItems: List<String>, ) {
         Column {
             menuItems.forEach { item ->
                 MainScreenElement(text = item)
@@ -91,8 +95,9 @@ class MainScreen : Screen {
         }
     }
 
+
     @Composable
-    fun MainScreenButtons() {
+    fun MainScreenButtons(viewModel: MainViewModel) {
         Surface(
             modifier = Modifier.padding(2.dp),
             color = MaterialTheme.colors.primary,
@@ -110,7 +115,9 @@ class MainScreen : Screen {
                     modifier = Modifier
                         .weight(0.33f)
                         .size(36.dp),
-                    onClick = {}
+                    onClick = {
+                        viewModel.addTraining(Event(isPaid = false, date = "11.07.2024"))
+                    }
                 ) {
                     Icon(
                         painterResource(Res.drawable.cardio_load_24px),
