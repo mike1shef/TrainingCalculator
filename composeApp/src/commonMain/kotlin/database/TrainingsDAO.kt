@@ -4,6 +4,9 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
+import database.model.BodyMeasurements
+import database.model.Event
+import database.model.Payment
 import kotlinx.coroutines.flow.Flow
 
 @Dao
