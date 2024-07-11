@@ -1,11 +1,13 @@
 package UI
 
-import database.Event
+import MainViewModel
+import database.model.Event
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,6 +19,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,27 +34,33 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import database.generateEvents
+import database.TrainingsDAO
+import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
-class TrainingsScreen : Screen {
-
+class TrainingsScreen () : Screen {
     @Composable
     override fun Content() {
+        val dao = koinInject<TrainingsDAO>()
+        val viewModel = koinViewModel<MainViewModel>()
+        val trainings = dao.getAllTrainings().collectAsState(initial = emptyList())
+
         val navigator : Navigator = LocalNavigator.currentOrThrow
         Scaffold(
             topBar = { CustomTopAppBar(navigator, "Trainings") }
         ){
             Column {
-                Schedule(generateEvents())
+                Schedule(trainings)
             }
         }
     }
 
     @Composable
-    fun Schedule (events: List<Event>) {
-        LazyColumn {
-            items(events){ item: Event ->
-                Event(item)
+    fun Schedule (events: State<List<Event>>) {
+        LazyColumn (modifier = Modifier.fillMaxSize())
+        {
+            items(events.value) { event ->
+                Event(event)
             }
         }
     }
