@@ -41,9 +41,8 @@ import org.koin.compose.viewmodel.koinViewModel
 class TrainingsScreen () : Screen {
     @Composable
     override fun Content() {
-        val dao = koinInject<TrainingsDAO>()
         val viewModel = koinViewModel<MainViewModel>()
-        val trainings = dao.getAllTrainings().collectAsState(initial = emptyList())
+        val trainings = viewModel.trainings.collectAsState(initial = emptyList())
 
         val navigator : Navigator = LocalNavigator.currentOrThrow
         Scaffold(
