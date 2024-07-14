@@ -40,7 +40,10 @@ class MainScreen () : Screen {
     @Composable
     override fun Content() {
         val viewModel = koinViewModel<MainViewModel>()
-        Scaffold() {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            topBar = {topAppBar()}
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
