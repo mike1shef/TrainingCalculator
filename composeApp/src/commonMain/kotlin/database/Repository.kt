@@ -42,5 +42,4 @@ class RepositoryImpl (private val dao: TrainingsDAO) : Repository {
     override suspend fun deletePayment(payment: Payment){
         dao.deletePayment(payment)
     }
-
 }
