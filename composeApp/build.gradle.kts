@@ -53,6 +53,7 @@ kotlin{
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(libs.kotlinx.datetime)
 
             implementation(libs.room.runtime)
             implementation(libs.sqlite.bundled)
@@ -109,5 +110,7 @@ room {
     schemaDirectory("$projectDir/schemas")
 }
 dependencies {
+    implementation(libs.places)
+    implementation(libs.androidx.core.i18n)
     ksp(libs.room.compiler)
 }

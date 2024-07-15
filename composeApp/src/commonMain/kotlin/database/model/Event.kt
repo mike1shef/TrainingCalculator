@@ -9,7 +9,7 @@ data class Event (
     @PrimaryKey(autoGenerate = true)
     val id : Int = 0,
     val name : String = "Training",
-    val cost : Double = 30.0,
+    var cost : Double = 30.0,
     var isPaid: Boolean,
     val date : String
 )

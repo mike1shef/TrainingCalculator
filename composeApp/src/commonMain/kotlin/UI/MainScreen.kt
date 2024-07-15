@@ -39,7 +39,7 @@ class MainScreen () : Screen {
 
     @Composable
     override fun Content() {
-        val viewModel = koinViewModel<MainViewModel>()
+
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {topAppBar()}
@@ -56,7 +56,7 @@ class MainScreen () : Screen {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    MainScreenButtons(viewModel)
+                    MainScreenButtons()
                 }
             }
         }
@@ -100,7 +100,9 @@ class MainScreen () : Screen {
 
 
     @Composable
-    fun MainScreenButtons(viewModel: MainViewModel) {
+    fun MainScreenButtons() {
+        val navigator = LocalNavigator.currentOrThrow
+
         Surface(
             modifier = Modifier.padding(2.dp),
             color = MaterialTheme.colors.primary,
@@ -119,7 +121,7 @@ class MainScreen () : Screen {
                         .weight(0.33f)
                         .size(36.dp),
                     onClick = {
-                        viewModel.addTraining(Event(isPaid = false, date = "11.07.2024"))
+                        navigator.push(AddTrainingScreen())
                     }
                 ) {
                     Icon(
