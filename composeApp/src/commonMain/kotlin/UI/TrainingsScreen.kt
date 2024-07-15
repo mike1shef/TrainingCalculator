@@ -1,8 +1,13 @@
+package UI
+
+import MainViewModel
+import database.model.Event
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,8 +18,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,26 +34,32 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import database.TrainingsDAO
+import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
-class Trainings : Screen {
-
+class TrainingsScreen () : Screen {
     @Composable
     override fun Content() {
+        val viewModel = koinViewModel<MainViewModel>()
+        val trainings = viewModel.trainings.collectAsState(initial = emptyList())
+
         val navigator : Navigator = LocalNavigator.currentOrThrow
         Scaffold(
             topBar = { CustomTopAppBar(navigator, "Trainings") }
         ){
             Column {
-                Schedule(generateEvents())
-                }
+                Schedule(trainings)
+            }
         }
     }
 
     @Composable
-    fun Schedule (events: List<Event>) {
-        LazyColumn {
-            items(events){ item: Event ->
-                Event(item)
+    fun Schedule (events: State<List<Event>>) {
+        LazyColumn (modifier = Modifier.fillMaxSize())
+        {
+            items(events.value) { event ->
+                Event(event)
             }
         }
     }
@@ -57,7 +69,7 @@ class Trainings : Screen {
         event: Event
     ){
         var isSelected by remember { mutableStateOf(false) }
-        var status by remember { mutableStateOf(event.status) }
+        var status by remember { mutableStateOf(event.isPaid) }
 
         Row(
             Modifier
@@ -84,43 +96,14 @@ class Trainings : Screen {
                 )
             }
 
-            when (status) {
-                EventStatus.UPCOMING -> IconButton(
-                    onClick = { status = EventStatus.FINISHED
-                    }) {
+            if (!status) { IconButton(
+                onClick = { status = true }) {
                     Icon(Icons.Filled.DateRange, contentDescription = "Upcoming visit" )
-                }
-                EventStatus.FINISHED -> IconButton(onClick = {/*TODO*/ }) {
-                    Icon(Icons.Filled.Send, contentDescription = "Tap to Pay")
-                }
-                EventStatus.PAID-> IconButton(onClick = { /*TODO*/ }) {
-                    Icon(Icons.Filled.Done, contentDescription = "Done")
-                }
+            }
+                } else { IconButton(onClick = { /*TODO*/ }) {
+                Icon(Icons.Filled.Done, contentDescription = "Done")
+            }
             }
         }
     }
-}
-
-
-data class Event (
-    val name : String = "Training",
-    var status: EventStatus = EventStatus.UPCOMING,
-    val date : String = "12/12/2023"
-)
-
-fun generateEvents() : List<Event>{
-    return listOf(
-        Event(status = EventStatus.UPCOMING, date = "31/06/2024"),
-        Event(status = EventStatus.UPCOMING, date = "29/06/2024"),
-        Event(status = EventStatus.FINISHED, date = "23/06/2024"),
-        Event(status = EventStatus.FINISHED, date = "21/06/2024"),
-        Event(status = EventStatus.PAID, date = "15/06/2024"),
-        Event(status = EventStatus.PAID, date = "14/06/2024")
-    )
-}
-
-enum class EventStatus {
-    UPCOMING,
-    FINISHED,
-    PAID
 }
