@@ -1,6 +1,5 @@
-package UI
+package ui
 
-import MainViewModel
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,9 +25,7 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import database.model.Event
 import org.jetbrains.compose.resources.painterResource
-import org.koin.compose.viewmodel.koinViewModel
 import trainingcalculator.composeapp.generated.resources.Res
 import trainingcalculator.composeapp.generated.resources.cardio_load_24px
 import trainingcalculator.composeapp.generated.resources.payments_24px
@@ -42,7 +39,7 @@ class MainScreen () : Screen {
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            topBar = {topAppBar()}
+            topBar = { topAppBar() }
         ) {
             Column(
                 modifier = Modifier
@@ -133,7 +130,9 @@ class MainScreen () : Screen {
                     modifier = Modifier
                         .weight(0.33f)
                         .size(36.dp),
-                    onClick = {}
+                    onClick = {
+                        navigator.push(AddBodyMeasurementScreen())
+                    }
                 ) {
                     Icon(
                         painterResource(Res.drawable.straighten_24px),

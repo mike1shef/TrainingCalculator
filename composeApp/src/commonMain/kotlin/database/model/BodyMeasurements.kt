@@ -2,13 +2,14 @@ package database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.datetime.LocalDate
 
 @Entity
 data class BodyMeasurements (
     @PrimaryKey(autoGenerate = true)  val id : Int = 0,
-    val weight : Float,
-    val height : Float,
-    val skMuscle : Float?,
-    val bodyFat : Float?,
-    val BMI : Float?,
-    val BMR : Float?)
+    val weight : String,
+    val skMuscle : String = "",
+    val date: String,
+    val bodyFat : String = "",
+    val bmi : String = "",
+    val bmr : String = "")

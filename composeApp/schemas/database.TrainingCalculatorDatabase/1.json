@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "52abf75541555bd05707d48c61e9a3bc",
+    "identityHash": "146e04553f9a2c77ec7f6e82fc048b7f",
     "entities": [
       {
         "tableName": "Event",
@@ -78,7 +78,7 @@
       },
       {
         "tableName": "BodyMeasurements",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `weight` REAL NOT NULL, `height` REAL NOT NULL, `skMuscle` REAL, `bodyFat` REAL, `BMI` REAL, `BMR` REAL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `weight` TEXT NOT NULL, `skMuscle` TEXT NOT NULL, `date` TEXT NOT NULL, `bodyFat` TEXT NOT NULL, `bmi` TEXT NOT NULL, `bmr` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -89,34 +89,38 @@
           {
             "fieldPath": "weight",
             "columnName": "weight",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "height",
-            "columnName": "height",
-            "affinity": "REAL",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
             "fieldPath": "skMuscle",
             "columnName": "skMuscle",
-            "affinity": "REAL"
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
           },
           {
             "fieldPath": "bodyFat",
             "columnName": "bodyFat",
-            "affinity": "REAL"
+            "affinity": "TEXT",
+            "notNull": true
           },
           {
-            "fieldPath": "BMI",
-            "columnName": "BMI",
-            "affinity": "REAL"
+            "fieldPath": "bmi",
+            "columnName": "bmi",
+            "affinity": "TEXT",
+            "notNull": true
           },
           {
-            "fieldPath": "BMR",
-            "columnName": "BMR",
-            "affinity": "REAL"
+            "fieldPath": "bmr",
+            "columnName": "bmr",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -129,7 +133,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '52abf75541555bd05707d48c61e9a3bc')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '146e04553f9a2c77ec7f6e82fc048b7f')"
     ]
   }
 }

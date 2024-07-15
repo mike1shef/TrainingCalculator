@@ -1,4 +1,4 @@
-package UI
+package ui
 
 import MainViewModel
 import database.model.Event
@@ -34,8 +34,6 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import database.TrainingsDAO
-import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 class TrainingsScreen () : Screen {

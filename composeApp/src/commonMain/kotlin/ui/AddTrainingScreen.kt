@@ -1,4 +1,4 @@
-package UI
+package ui
 
 import MainViewModel
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import kotlinx.datetime.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -32,19 +33,9 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import database.model.Event
-import kotlinx.datetime.Clock
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.format
-import kotlinx.datetime.format.*
-import kotlinx.datetime.minus
-import kotlinx.datetime.plus
-import kotlinx.datetime.toLocalDateTime
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import utils.localDateChecker
 
 class AddTrainingScreen : Screen {
 
@@ -189,39 +180,6 @@ class AddTrainingScreen : Screen {
                     DatePicker(state = datePickerState)
                 }
             }
-        }
-    }
-}
-
-fun localDateChecker (date : LocalDate) : String {
-
-    val dateFormat = LocalDate.Format {
-        dayOfMonth(padding = Padding.SPACE)
-        char(' ')
-        monthNumber()
-        char(' ')
-        dayOfMonth()
-    }
-    val dateString = date.format(dateFormat)
-
-    val now: Instant = Clock.System.now()
-    val today: LocalDate = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
-    val yesterday = today.minus(1, DateTimeUnit.DAY)
-    val tomorrow = today.plus(1, DateTimeUnit.DAY)
-
-
-    return when (date) {
-        today -> {
-            "Today"
-        }
-        yesterday -> {
-            "Yesterday"
-        }
-        tomorrow -> {
-            "Tomorrow"
-        }
-        else -> {
-            dateString
         }
     }
 }
