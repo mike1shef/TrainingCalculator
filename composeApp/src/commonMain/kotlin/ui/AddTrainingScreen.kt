@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,7 +40,6 @@ import utils.localDateChecker
 
 class AddTrainingScreen : Screen {
 
-    @OptIn(ExperimentalMaterial3Api::class, KoinExperimentalAPI::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -87,7 +87,8 @@ class AddTrainingScreen : Screen {
                         modifier = Modifier.weight(0.4f),
                         onClick = { openDialog.value = true }
                     ) {
-                        Text(localDateChecker(selectedDate.value))
+                        val text = localDateChecker(selectedDate.value)
+                        Text(text)
                     }
                 }
                 Row(
@@ -149,36 +150,7 @@ class AddTrainingScreen : Screen {
                 }
             }
             if (openDialog.value) {
-                val datePickerState =
-                    rememberDatePickerState(initialSelectedDateMillis = now.toEpochMilliseconds())
-                val confirmEnabled =
-                    { derivedStateOf { datePickerState.selectedDateMillis != null } }
-                DatePickerDialog(
-                    onDismissRequest = { openDialog.value = false },
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                openDialog.value = false
-                                val instantSelectedDate = Instant.fromEpochMilliseconds(datePickerState.selectedDateMillis!!)
-                                    .toLocalDateTime(TimeZone.UTC)
-                                    .date
-                                selectedDate.value = instantSelectedDate
-                            },
-                            enabled = confirmEnabled().value
-                        ) {
-                            Text("Confirm")
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(
-                            onClick = { openDialog.value = false }
-                        ) {
-                            Text("Dismiss")
-                        }
-                    }
-                ) {
-                    DatePicker(state = datePickerState)
-                }
+                CustomDatePickerDialog(openDialog, selectedDate)
             }
         }
     }

@@ -13,6 +13,11 @@ import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 
 
+fun getCurrentDate() : LocalDate {
+    val now: Instant = Clock.System.now()
+    return now.toLocalDateTime(TimeZone.currentSystemDefault()).date
+}
+
 fun localDateChecker (date : LocalDate) : String {
 
     val dateFormat = LocalDate.Format {
@@ -24,8 +29,7 @@ fun localDateChecker (date : LocalDate) : String {
     }
     val dateString = date.format(dateFormat)
 
-    val now: Instant = Clock.System.now()
-    val today: LocalDate = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
+    val today = getCurrentDate()
     val yesterday = today.minus(1, DateTimeUnit.DAY)
     val tomorrow = today.plus(1, DateTimeUnit.DAY)
 

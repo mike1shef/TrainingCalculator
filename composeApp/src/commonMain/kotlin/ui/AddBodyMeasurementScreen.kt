@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -26,13 +27,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import database.model.BodyMeasurements
+import database.model.Weight
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.koin.compose.viewmodel.koinViewModel
+import utils.getCurrentDate
+import utils.localDateChecker
 
 class AddBodyMeasurementScreen : Screen {
 
@@ -48,9 +58,13 @@ class AddBodyMeasurementScreen : Screen {
 
     @Composable
     fun AddMeasurement(navigator: Navigator){
+        val currentDate = getCurrentDate()
         val viewModel = koinViewModel<MainViewModel>()
         var showFullData by remember { mutableStateOf(false) }
         var weight by remember { mutableStateOf("") }
+
+        val selectedDate = remember { mutableStateOf(currentDate) }
+        val openDialog = remember { mutableStateOf(false) }
 
         val listOfMeasurements = remember { mutableStateListOf<String>("", "", "", "") } // Store measurements
 
@@ -69,7 +83,7 @@ class AddBodyMeasurementScreen : Screen {
                     label = {Text("weight")},
                     modifier = Modifier.weight(0.5f),
                     maxLines = 1,
-                    //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
 
                 Column (
@@ -120,9 +134,10 @@ class AddBodyMeasurementScreen : Screen {
                 TextButton(
                     modifier = Modifier
                         .weight(0.5f),
-                    onClick = {}
+                    onClick = { openDialog.value = true}
                 ) {
-                    Text("Today")
+                    val text = localDateChecker(selectedDate.value)
+                    Text(text)
                 }
             }
             Button(
@@ -130,14 +145,28 @@ class AddBodyMeasurementScreen : Screen {
                     .fillMaxWidth()
                     .padding(horizontal = 0.dp, vertical = 8.dp),
                 onClick = {
-                    val bodyMeasurements = createBodyMeasurement(weight,listOfMeasurements,"15/07/2024")
-                    viewModel.addBodyMeasurement(bodyMeasurements)
-                    navigator.pop()
+                    val weight = Weight(weight = weight, date = selectedDate.value.toString())
+
+                    if (showFullData){
+                        val bodyMeasurement = createBodyMeasurement(
+                            additionalMeasurements = listOfMeasurements,
+                            date = selectedDate.value.toString()
+                        )
+                        viewModel.addBodyMeasurement(bodyMeasurement)
+                        viewModel.addWeight(weight)
+                        navigator.pop()
+                    } else {
+                        viewModel.addWeight(weight)
+                        navigator.pop()
+                    }
                 },
-                enabled = if(weight.isNotBlank()) true else false
+                enabled = checkAvailability(weight, listOfMeasurements, showFullData)
             ) {
                 Text(text = "Add Measurement")
             }
+        }
+        if (openDialog.value) {
+            CustomDatePickerDialog(openDialog, selectedDate)
         }
     }
 
@@ -171,18 +200,25 @@ class AddBodyMeasurementScreen : Screen {
             label = { Text(text) },
             onValueChange = onValueChange,
             maxLines = 1,
-            //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
     }
 }
 
-fun createBodyMeasurement(weight : String, additionalMeasurements : List<String>, date : String) : BodyMeasurements{
+fun createBodyMeasurement( additionalMeasurements : List<String>, date : String) : BodyMeasurements{
     return BodyMeasurements(
-        weight = weight,
         skMuscle = additionalMeasurements[0],
         bodyFat = additionalMeasurements[1],
         bmi = additionalMeasurements[2],
         bmr = additionalMeasurements[3],
         date = date
     )
+}
+
+fun checkAvailability (weight : String, bodyMeasurements : List<String>, showData : Boolean): Boolean{
+    return if (showData) {
+        bodyMeasurements.all { it.isNotBlank() }
+    } else {
+        weight.isNotBlank()
+    }
 }

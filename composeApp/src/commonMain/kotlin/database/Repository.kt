@@ -3,12 +3,14 @@ package database
 import database.model.BodyMeasurements
 import database.model.Event
 import database.model.Payment
+import database.model.Weight
 import kotlinx.coroutines.flow.Flow
 
 interface Repository {
     suspend fun addTraining(event: Event)
     suspend fun addMeasurement(measurement : BodyMeasurements)
     suspend fun addPayment(payment: Payment)
+    suspend fun addWeight(weight: Weight)
     suspend fun deleteTraining(event: Event)
     suspend fun deleteMeasurement(measurement : BodyMeasurements)
     suspend fun deletePayment(payment: Payment)
@@ -25,6 +27,10 @@ class RepositoryImpl (private val dao: TrainingsDAO) : Repository {
     }
     override suspend fun addMeasurement(measurement : BodyMeasurements){
         dao.addBodyMeasurements(measurement)
+    }
+
+    override suspend fun addWeight(weight: Weight){
+        dao.addWeight(weight)
     }
 
     override suspend fun addPayment(payment: Payment){
