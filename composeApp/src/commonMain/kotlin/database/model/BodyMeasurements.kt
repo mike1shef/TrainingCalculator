@@ -11,10 +11,16 @@ data class BodyMeasurements (
     val date: String,
     val bodyFat : String,
     val bmi : String,
-    val bmr : String)
+    val bmr : String){
+
+    constructor() : this(skMuscle = "", date = "", bodyFat = "", bmi = "", bmr = "")
+}
 
 @Entity
 data class Weight (
     @PrimaryKey(autoGenerate = true)  val id : Int = 0,
     val weight : String,
-    val date: String, )
+    val date: String ) {
+
+    constructor() : this(id = 0, weight = "", date = "")
+}
