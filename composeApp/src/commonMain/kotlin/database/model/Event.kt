@@ -3,6 +3,7 @@ package database.model
 import androidx.compose.runtime.LaunchedEffect
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.datetime.LocalDate
 
 @Entity
 data class Event (
@@ -11,5 +12,5 @@ data class Event (
     val name : String = "Training",
     var cost : Double = 30.0,
     var isPaid: Boolean,
-    val date : String
+    val date : LocalDate
 )
