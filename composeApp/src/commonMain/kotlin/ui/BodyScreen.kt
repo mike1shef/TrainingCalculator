@@ -1,4 +1,4 @@
-package UI
+package ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Scaffold

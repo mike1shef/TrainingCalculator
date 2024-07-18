@@ -1,4 +1,4 @@
-package UI
+package ui
 
 import MainViewModel
 import androidx.compose.foundation.layout.Box

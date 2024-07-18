@@ -1,4 +1,4 @@
-package UI
+package ui
 
 import MainViewModel
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import kotlinx.datetime.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -20,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,23 +34,12 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import database.model.Event
-import kotlinx.datetime.Clock
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.format
-import kotlinx.datetime.format.*
-import kotlinx.datetime.minus
-import kotlinx.datetime.plus
-import kotlinx.datetime.toLocalDateTime
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import utils.localDateChecker
 
 class AddTrainingScreen : Screen {
 
-    @OptIn(ExperimentalMaterial3Api::class, KoinExperimentalAPI::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -96,7 +87,8 @@ class AddTrainingScreen : Screen {
                         modifier = Modifier.weight(0.4f),
                         onClick = { openDialog.value = true }
                     ) {
-                        Text(localDateChecker(selectedDate.value))
+                        val text = localDateChecker(selectedDate.value)
+                        Text(text)
                     }
                 }
                 Row(
@@ -158,70 +150,8 @@ class AddTrainingScreen : Screen {
                 }
             }
             if (openDialog.value) {
-                val datePickerState =
-                    rememberDatePickerState(initialSelectedDateMillis = now.toEpochMilliseconds())
-                val confirmEnabled =
-                    { derivedStateOf { datePickerState.selectedDateMillis != null } }
-                DatePickerDialog(
-                    onDismissRequest = { openDialog.value = false },
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                openDialog.value = false
-                                val instantSelectedDate = Instant.fromEpochMilliseconds(datePickerState.selectedDateMillis!!)
-                                    .toLocalDateTime(TimeZone.UTC)
-                                    .date
-                                selectedDate.value = instantSelectedDate
-                            },
-                            enabled = confirmEnabled().value
-                        ) {
-                            Text("Confirm")
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(
-                            onClick = { openDialog.value = false }
-                        ) {
-                            Text("Dismiss")
-                        }
-                    }
-                ) {
-                    DatePicker(state = datePickerState)
-                }
+                CustomDatePickerDialog(openDialog, selectedDate)
             }
-        }
-    }
-}
-
-fun localDateChecker (date : LocalDate) : String {
-
-    val dateFormat = LocalDate.Format {
-        dayOfMonth(padding = Padding.SPACE)
-        char(' ')
-        monthNumber()
-        char(' ')
-        dayOfMonth()
-    }
-    val dateString = date.format(dateFormat)
-
-    val now: Instant = Clock.System.now()
-    val today: LocalDate = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
-    val yesterday = today.minus(1, DateTimeUnit.DAY)
-    val tomorrow = today.plus(1, DateTimeUnit.DAY)
-
-
-    return when (date) {
-        today -> {
-            "Today"
-        }
-        yesterday -> {
-            "Yesterday"
-        }
-        tomorrow -> {
-            "Tomorrow"
-        }
-        else -> {
-            dateString
         }
     }
 }

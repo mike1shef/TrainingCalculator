@@ -23,6 +23,7 @@ kotlin{
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            linkerOpts.add("-lsqlite3")
         }
     }
     
@@ -53,7 +54,7 @@ kotlin{
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(libs.kotlinx.datetime)
+            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
 
             implementation(libs.room.runtime)
             implementation(libs.sqlite.bundled)

@@ -1,7 +1,9 @@
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import database.RepositoryImpl
+import database.model.BodyMeasurements
 import database.model.Event
+import database.model.Weight
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -26,6 +28,18 @@ class MainViewModel(private val repository: RepositoryImpl) : ViewModel() {
                 val unpaidTrainings = trainings.filter { !it.isPaid }
                 _valueToPay.value = unpaidTrainings.sumOf { it.cost }
             }
+        }
+    }
+
+    fun addBodyMeasurement(bodyMeasurement: BodyMeasurements) {
+        viewModelScope.launch {
+            repository.addMeasurement(bodyMeasurement)
+        }
+    }
+
+    fun addWeight (weight: Weight) {
+        viewModelScope.launch {
+            repository.addWeight(weight)
         }
     }
 }

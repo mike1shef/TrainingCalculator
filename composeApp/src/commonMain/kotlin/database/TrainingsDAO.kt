@@ -7,6 +7,7 @@ import androidx.room.Upsert
 import database.model.BodyMeasurements
 import database.model.Event
 import database.model.Payment
+import database.model.Weight
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,6 +15,9 @@ interface TrainingsDAO {
 
     @Upsert
     suspend fun addTraining(event: Event)
+
+    @Upsert
+    suspend fun addWeight(weight: Weight)
 
     @Upsert
     suspend fun addPayment(payment: Payment)

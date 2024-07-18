@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "52abf75541555bd05707d48c61e9a3bc",
+    "identityHash": "fbf56a0349f9ffe05e56c72011eca2ad",
     "entities": [
       {
         "tableName": "Event",
@@ -78,7 +78,55 @@
       },
       {
         "tableName": "BodyMeasurements",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `weight` REAL NOT NULL, `height` REAL NOT NULL, `skMuscle` REAL, `bodyFat` REAL, `BMI` REAL, `BMR` REAL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `skMuscle` TEXT NOT NULL, `date` TEXT NOT NULL, `bodyFat` TEXT NOT NULL, `bmi` TEXT NOT NULL, `bmr` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "skMuscle",
+            "columnName": "skMuscle",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bodyFat",
+            "columnName": "bodyFat",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bmi",
+            "columnName": "bmi",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bmr",
+            "columnName": "bmr",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "Weight",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `weight` TEXT NOT NULL, `date` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -89,34 +137,14 @@
           {
             "fieldPath": "weight",
             "columnName": "weight",
-            "affinity": "REAL",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "height",
-            "columnName": "height",
-            "affinity": "REAL",
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "skMuscle",
-            "columnName": "skMuscle",
-            "affinity": "REAL"
-          },
-          {
-            "fieldPath": "bodyFat",
-            "columnName": "bodyFat",
-            "affinity": "REAL"
-          },
-          {
-            "fieldPath": "BMI",
-            "columnName": "BMI",
-            "affinity": "REAL"
-          },
-          {
-            "fieldPath": "BMR",
-            "columnName": "BMR",
-            "affinity": "REAL"
           }
         ],
         "primaryKey": {
@@ -129,7 +157,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '52abf75541555bd05707d48c61e9a3bc')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fbf56a0349f9ffe05e56c72011eca2ad')"
     ]
   }
 }
