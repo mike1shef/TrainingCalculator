@@ -83,7 +83,7 @@ class AddBodyMeasurementScreen : Screen {
                     label = {Text("weight")},
                     modifier = Modifier.weight(0.5f),
                     maxLines = 1,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 )
 
                 Column (
@@ -200,7 +200,7 @@ class AddBodyMeasurementScreen : Screen {
             label = { Text(text) },
             onValueChange = onValueChange,
             maxLines = 1,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
         )
     }
 }
