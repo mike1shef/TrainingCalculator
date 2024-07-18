@@ -40,6 +40,12 @@ interface TrainingsDAO {
     @Query("SELECT * FROM Payment")
     fun getAllPayments() : Flow<List<Payment>>
 
+    @Query("SELECT * FROM Weight")
+    fun getAllWeights() : Flow<List<Weight>>
+
     @Query("SELECT * FROM BodyMeasurements")
     fun getAllBodyMeasurements() : Flow<List<BodyMeasurements>>
+
+    @Query("SELECT * FROM BodyMeasurements ORDER BY id DESC LIMIT 1")
+    fun getTheLastBodyMeasurements() : Flow<BodyMeasurements?>
 }
