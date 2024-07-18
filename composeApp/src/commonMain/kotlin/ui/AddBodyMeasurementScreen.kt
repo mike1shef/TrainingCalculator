@@ -145,12 +145,12 @@ class AddBodyMeasurementScreen : Screen {
                     .fillMaxWidth()
                     .padding(horizontal = 0.dp, vertical = 8.dp),
                 onClick = {
-                    val weight = Weight(weight = weight, date = selectedDate.value.toString())
+                    val weight = Weight(weight = weight, date = selectedDate.value)
 
                     if (showFullData){
                         val bodyMeasurement = createBodyMeasurement(
                             additionalMeasurements = listOfMeasurements,
-                            date = selectedDate.value.toString()
+                            date = selectedDate.value
                         )
                         viewModel.addBodyMeasurement(bodyMeasurement)
                         viewModel.addWeight(weight)
@@ -205,7 +205,7 @@ class AddBodyMeasurementScreen : Screen {
     }
 }
 
-fun createBodyMeasurement( additionalMeasurements : List<String>, date : String) : BodyMeasurements{
+fun createBodyMeasurement( additionalMeasurements : List<String>, date : LocalDate) : BodyMeasurements{
     return BodyMeasurements(
         skMuscle = additionalMeasurements[0],
         bodyFat = additionalMeasurements[1],

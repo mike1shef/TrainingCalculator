@@ -142,7 +142,7 @@ class AddTrainingScreen : Screen {
                         .padding(horizontal = 0.dp, vertical = 8.dp),
                     onClick = {
                         viewModel.addTraining(
-                            Event(date = selectedDate.value.toString(),isPaid = isPaid))
+                            Event(date = selectedDate.value,isPaid = isPaid))
                         navigator.pop()
                     }
                 ) {

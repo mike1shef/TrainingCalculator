@@ -70,7 +70,7 @@ class TrainingsScreen () : Screen {
     ){
         var isSelected by remember { mutableStateOf(false) }
         var status by remember { mutableStateOf(event.isPaid) }
-        val date = localDateChecker(LocalDate.parse(event.date))
+        val date = localDateChecker(event.date)
 
         Row(
             Modifier
