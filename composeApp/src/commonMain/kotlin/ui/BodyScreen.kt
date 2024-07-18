@@ -1,5 +1,6 @@
 package ui
 
+import MainViewModel
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,6 +23,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import org.koin.compose.viewmodel.koinViewModel
 
 class BodyScreen : Screen {
     @Composable
@@ -37,6 +39,15 @@ class BodyScreen : Screen {
 
 @Composable
 fun ScreenList(){
+    val viewModel = koinViewModel<MainViewModel>()
+    viewModel.getTheLastBodyMeasurements()
+    viewModel.getTheLastWeight()
+    val isBMEmpty = viewModel.bodyMeasurementIsEmpty()
+    val isWeightEmpty = viewModel.bodyWeightIsEmpty()
+
+
+    val onClick : () -> Unit = {/*TODO*/ }
+
     LazyVerticalStaggeredGrid(
         modifier = Modifier.fillMaxSize(),
         columns = StaggeredGridCells.Fixed(2),
@@ -44,26 +55,26 @@ fun ScreenList(){
         verticalItemSpacing = 16.dp,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        item {
-            WeightElement()
+        if(!isWeightEmpty){
+            val weight = viewModel.lastWeight.value.weight
+            item {
+                WeightElement(weight)
+            }
+
         }
-        item {
-            SkMuscleElement()
-        }
-        item {
-            BodyFatElement()
-        }
-        item {
-            BmiElement()
-        }
-        item {
-            BmrElement()
+        if (!isBMEmpty){
+            val bodyMeasurement = viewModel.lastMeasurements.value
+
+            item { SkMuscleElement(bodyMeasurement.skMuscle) }
+            item { BodyFatElement(bodyMeasurement.bodyFat) }
+            item { BmiElement(bodyMeasurement.bmi) }
+            item { BmrElement(bodyMeasurement.bmr) }
         }
     }
 }
 
 @Composable
-fun WeightElement(){
+fun WeightElement(weight : String){
     OutlinedCard(
         enabled = true,
         onClick = { /*TODO*/ },
@@ -82,9 +93,9 @@ fun WeightElement(){
                 color = MaterialTheme.colorScheme.secondary
             )
             Text(
-                text = "50",
+                text = weight,
                 style = MaterialTheme.typography.headlineLarge,
-                fontSize = 80.sp,
+                fontSize = 64.sp,
                 modifier = Modifier
                     .align(Alignment.Center),
                 color = MaterialTheme.colorScheme.primary
@@ -94,7 +105,7 @@ fun WeightElement(){
 }
 
 @Composable
-fun SkMuscleElement(){
+fun SkMuscleElement(skValue: String){
     OutlinedCard(
         onClick = { /*TODO*/ },
         modifier = Modifier.size(120.dp, 120.dp),
@@ -117,7 +128,7 @@ fun SkMuscleElement(){
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "24.4",
+                    text = skValue,
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -133,7 +144,7 @@ fun SkMuscleElement(){
 }
 
 @Composable
-fun BodyFatElement(){
+fun BodyFatElement(bodyFatValue : String){
     OutlinedCard(
         onClick = { /*TODO*/ },
         modifier = Modifier.size(120.dp, 120.dp),
@@ -157,7 +168,7 @@ fun BodyFatElement(){
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "11",
+                    text = bodyFatValue,
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -174,7 +185,7 @@ fun BodyFatElement(){
 }
 
 @Composable
-fun BmiElement(){
+fun BmiElement(bmiValue : String){
     OutlinedCard(
         onClick = { /*TODO*/ },
         modifier = Modifier.size(120.dp, 120.dp),
@@ -198,7 +209,7 @@ fun BmiElement(){
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "18.5",
+                    text = bmiValue,
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -215,7 +226,7 @@ fun BmiElement(){
 }
 
 @Composable
-fun BmrElement() {
+fun BmrElement(bmrValue : String) {
     OutlinedCard(
         onClick = { /*TODO*/ },
         modifier = Modifier.size(120.dp, 120.dp),
@@ -239,7 +250,7 @@ fun BmrElement() {
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "1334",
+                    text = bmrValue,
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
