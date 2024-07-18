@@ -34,7 +34,9 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import kotlinx.datetime.LocalDate
 import org.koin.compose.viewmodel.koinViewModel
+import utils.localDateChecker
 
 class TrainingsScreen () : Screen {
     @Composable
@@ -68,6 +70,7 @@ class TrainingsScreen () : Screen {
     ){
         var isSelected by remember { mutableStateOf(false) }
         var status by remember { mutableStateOf(event.isPaid) }
+        val date = localDateChecker(LocalDate.parse(event.date))
 
         Row(
             Modifier
@@ -88,7 +91,7 @@ class TrainingsScreen () : Screen {
                     fontSize = 16.sp
                 )
                 Text(
-                    text = event.date,
+                    text = date,
                     fontSize = 14.sp,
                     color = Color.Black.copy(0.5f)
                 )

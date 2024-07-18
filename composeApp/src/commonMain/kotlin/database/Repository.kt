@@ -5,6 +5,7 @@ import database.model.Event
 import database.model.Payment
 import database.model.Weight
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 interface Repository {
     suspend fun addTraining(event: Event)
@@ -14,13 +15,13 @@ interface Repository {
     suspend fun deleteTraining(event: Event)
     suspend fun deleteMeasurement(measurement : BodyMeasurements)
     suspend fun deletePayment(payment: Payment)
+    fun getTheLastBodyMeasurements() : Flow<BodyMeasurements?>
 }
 
 class RepositoryImpl (private val dao: TrainingsDAO) : Repository {
 
     val trainings : Flow<List<Event>> = dao.getAllTrainings()
-    val payments : Flow<List<Payment>> = dao.getAllPayments()
-    val measurements : Flow<List<BodyMeasurements>> = dao.getAllBodyMeasurements()
+    val weights : Flow <List<Weight>> = dao.getAllWeights()
 
     override suspend fun addTraining(event: Event){
         dao.addTraining(event)
@@ -47,5 +48,11 @@ class RepositoryImpl (private val dao: TrainingsDAO) : Repository {
 
     override suspend fun deletePayment(payment: Payment){
         dao.deletePayment(payment)
+    }
+
+    override fun getTheLastBodyMeasurements() : Flow<BodyMeasurements?> {
+        return dao.getTheLastBodyMeasurements().map { bodyMeasurements ->
+            bodyMeasurements ?: BodyMeasurements()
+        }
     }
 }

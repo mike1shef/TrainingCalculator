@@ -6,11 +6,13 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
+import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.Padding
 import kotlinx.datetime.format.char
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
+
 
 
 fun getCurrentDate() : LocalDate {
@@ -21,11 +23,11 @@ fun getCurrentDate() : LocalDate {
 fun localDateChecker (date : LocalDate) : String {
 
     val dateFormat = LocalDate.Format {
-        dayOfMonth(padding = Padding.SPACE)
-        char(' ')
-        monthNumber()
-        char(' ')
-        dayOfMonth()
+        dayOfMonth(Padding.ZERO)
+        char('/')
+        monthNumber(Padding.ZERO)
+        char('/')
+        yearTwoDigits(1960)
     }
     val dateString = date.format(dateFormat)
 
