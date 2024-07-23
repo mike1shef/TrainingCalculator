@@ -9,32 +9,33 @@ import kotlinx.coroutines.flow.map
 
 interface Repository {
     suspend fun addTraining(event: Event)
-    suspend fun addMeasurement(measurement : BodyMeasurements)
+    suspend fun addMeasurement(measurement: BodyMeasurements)
     suspend fun addPayment(payment: Payment)
     suspend fun addWeight(weight: Weight)
     suspend fun deleteTraining(event: Event)
-    suspend fun deleteMeasurement(measurement : BodyMeasurements)
+    suspend fun deleteMeasurement(measurement: BodyMeasurements)
     suspend fun deletePayment(payment: Payment)
-    fun getTheLastBodyMeasurements() : Flow<BodyMeasurements?>
+    fun getTheLastBodyMeasurements(): Flow<BodyMeasurements?>
 }
 
-class RepositoryImpl (private val dao: TrainingsDAO) : Repository {
+class RepositoryImpl(private val dao: TrainingsDAO) : Repository {
 
-    val trainings : Flow<List<Event>> = dao.getAllTrainings()
-    val weights : Flow <List<Weight>> = dao.getAllWeights()
+    val trainings: Flow<List<Event>> = dao.getAllTrainings()
+    val weights: Flow<List<Weight>> = dao.getAllWeights()
 
-    override suspend fun addTraining(event: Event){
+    override suspend fun addTraining(event: Event) {
         dao.addTraining(event)
     }
-    override suspend fun addMeasurement(measurement : BodyMeasurements){
+
+    override suspend fun addMeasurement(measurement: BodyMeasurements) {
         dao.addBodyMeasurements(measurement)
     }
 
-    override suspend fun addWeight(weight: Weight){
+    override suspend fun addWeight(weight: Weight) {
         dao.addWeight(weight)
     }
 
-    override suspend fun addPayment(payment: Payment){
+    override suspend fun addPayment(payment: Payment) {
         dao.addPayment(payment)
     }
 
@@ -42,15 +43,15 @@ class RepositoryImpl (private val dao: TrainingsDAO) : Repository {
         dao.deleteTraining(event)
     }
 
-    override suspend fun deleteMeasurement(measurement : BodyMeasurements){
+    override suspend fun deleteMeasurement(measurement: BodyMeasurements) {
         dao.deleteBodyMeasurements(measurement)
     }
 
-    override suspend fun deletePayment(payment: Payment){
+    override suspend fun deletePayment(payment: Payment) {
         dao.deletePayment(payment)
     }
 
-    override fun getTheLastBodyMeasurements() : Flow<BodyMeasurements?> {
+    override fun getTheLastBodyMeasurements(): Flow<BodyMeasurements?> {
         return dao.getTheLastBodyMeasurements().map { bodyMeasurements ->
             bodyMeasurements ?: BodyMeasurements()
         }

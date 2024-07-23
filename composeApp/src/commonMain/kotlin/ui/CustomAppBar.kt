@@ -18,21 +18,23 @@ import cafe.adriel.voyager.navigator.Navigator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomTopAppBar (navigator: Navigator, title : String){
+fun CustomTopAppBar(navigator: Navigator, title: String) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     androidx.compose.material3.TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,
             titleContentColor = MaterialTheme.colorScheme.primary
         ),
-        title = { Text(
-            text = title,
-            maxLines = 1,
-            style = MaterialTheme.typography.titleLarge,
-            overflow = TextOverflow.Ellipsis
-        ) },
+        title = {
+            Text(
+                text = title,
+                maxLines = 1,
+                style = MaterialTheme.typography.titleLarge,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
         navigationIcon = {
-            IconButton(onClick = { navigator.pop() } ){
+            IconButton(onClick = { navigator.pop() }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back Arrow Icon"

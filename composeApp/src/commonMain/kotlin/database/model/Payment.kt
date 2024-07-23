@@ -7,9 +7,9 @@ import kotlinx.datetime.LocalDate
 @Entity
 data class Payment(
     @PrimaryKey(autoGenerate = true)
-    val id : Int = 0,
-    var amount : Double,
-    val date : LocalDate
+    val id: Int = 0,
+    var amount: Double,
+    val date: LocalDate
 )
 
 

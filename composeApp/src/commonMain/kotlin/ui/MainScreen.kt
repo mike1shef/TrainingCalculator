@@ -17,6 +17,8 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -31,27 +33,21 @@ import trainingcalculator.composeapp.generated.resources.cardio_load_24px
 import trainingcalculator.composeapp.generated.resources.payments_24px
 import trainingcalculator.composeapp.generated.resources.straighten_24px
 
-class MainScreen () : Screen {
-    private val MAIN_MENU = listOf("Trainings", "Body", "Payments")
+class MainScreen() : Screen {
+    private val MAIN_MENU = listOf("GYM", "Body", "Payments")
 
     @Composable
     override fun Content() {
 
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = { topAppBar() }
-        ) {
+        Scaffold(modifier = Modifier.fillMaxSize(), topBar = { topAppBar() }) {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(vertical = 12.dp, horizontal = 0.dp),
+                modifier = Modifier.fillMaxSize().padding(vertical = 12.dp, horizontal = 0.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 MainScreenContent(MAIN_MENU)
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
+                    modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
                 ) {
                     MainScreenButtons()
                 }
@@ -60,7 +56,7 @@ class MainScreen () : Screen {
     }
 
     @Composable
-    fun MainScreenContent(menuItems: List<String>, ) {
+    fun MainScreenContent(menuItems: List<String>) {
         Column {
             menuItems.forEach { item ->
                 MainScreenElement(text = item)
@@ -72,25 +68,19 @@ class MainScreen () : Screen {
     fun MainScreenElement(text: String) {
         val navigator = LocalNavigator.currentOrThrow
 
-        OutlinedCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 4.dp)
-                .clickable {
-                    when (text) {
-                        "Trainings" -> navigator.push(TrainingsScreen())
-                        "Body" -> navigator.push(BodyScreen())
-                        "Payments" -> navigator.push(PaymentsScreen())
-                    }
+        OutlinedCard(modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp)
+            .clickable {
+                when (text) {
+                    "Trainings" -> navigator.push(TrainingsScreen())
+                    "Body" -> navigator.push(BodyScreen())
+                    "Payments" -> navigator.push(PaymentsScreen())
                 }
-        ) {
+            }) {
             Text(
                 text = text,
                 fontSize = 28.sp,
                 textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .padding(24.dp)
-                    .fillMaxWidth()
+                modifier = Modifier.padding(24.dp).fillMaxWidth()
             )
         }
     }
@@ -99,6 +89,7 @@ class MainScreen () : Screen {
     @Composable
     fun MainScreenButtons() {
         val navigator = LocalNavigator.currentOrThrow
+        val openDialog = remember { mutableStateOf(false) }
 
         Surface(
             modifier = Modifier.padding(2.dp),
@@ -109,42 +100,26 @@ class MainScreen () : Screen {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(12.dp)
-                    .size(width = 180.dp, height = 48.dp)
+                modifier = Modifier.padding(12.dp).size(width = 180.dp, height = 48.dp)
 
             ) {
-                IconButton(
-                    modifier = Modifier
-                        .weight(0.33f)
-                        .size(36.dp),
-                    onClick = {
-                        navigator.push(AddTrainingScreen())
-                    }
-                ) {
+                IconButton(modifier = Modifier.weight(0.33f).size(36.dp), onClick = {
+                    navigator.push(AddTrainingScreen())
+                }) {
                     Icon(
                         painterResource(Res.drawable.cardio_load_24px),
                         contentDescription = "Add training"
                     )
                 }
-                IconButton(
-                    modifier = Modifier
-                        .weight(0.33f)
-                        .size(36.dp),
-                    onClick = {
-                        navigator.push(AddBodyMeasurementScreen())
-                    }
-                ) {
+                IconButton(modifier = Modifier.weight(0.33f).size(36.dp), onClick = {
+                    navigator.push(AddBodyMeasurementScreen())
+                }) {
                     Icon(
                         painterResource(Res.drawable.straighten_24px),
                         contentDescription = "Add measurement"
                     )
                 }
-                IconButton(
-                    modifier = Modifier
-                        .weight(0.33f)
-                        .size(36.dp),
-                    onClick = {}
-                ) {
+                IconButton(modifier = Modifier.weight(0.33f).size(36.dp), onClick = {}) {
                     Icon(
                         painterResource(Res.drawable.payments_24px),
                         contentDescription = "Add payment"

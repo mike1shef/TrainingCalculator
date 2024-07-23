@@ -17,12 +17,13 @@ class MainViewModel(private val repository: RepositoryImpl) : ViewModel() {
     private var _valueToPay = MutableStateFlow(0.0)
     val valueToPay get() = _valueToPay
 
-    private val _weights = repository.weights.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    private val _weights =
+        repository.weights.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    private var _lastWeight  = mutableStateOf<Weight>(Weight())
+    private var _lastWeight = mutableStateOf<Weight>(Weight())
     val lastWeight get() = _lastWeight
 
-    private val _lastMeasurements  = mutableStateOf(BodyMeasurements())
+    private val _lastMeasurements = mutableStateOf(BodyMeasurements())
 
     val lastMeasurements get() = _lastMeasurements
 
@@ -33,18 +34,19 @@ class MainViewModel(private val repository: RepositoryImpl) : ViewModel() {
     }
 
     fun getTheLastWeight() {
-        viewModelScope.launch{
-        _weights.collect { weights ->
-            if (weights.isNotEmpty()) {
-                val sortedWeights = weights.sortedByDescending { weight: Weight -> weight.id  }
-                val lastWeight = sortedWeights.first()
-                this@MainViewModel._lastWeight.value = lastWeight
+        viewModelScope.launch {
+            _weights.collect { weights ->
+                if (weights.isNotEmpty()) {
+                    val sortedWeights = weights.sortedByDescending { weight: Weight -> weight.id }
+                    val lastWeight = sortedWeights.first()
+                    this@MainViewModel._lastWeight.value = lastWeight
+                }
             }
-        } }
+        }
     }
 
 
-    fun calcTrainingsToPay(){
+    fun calcTrainingsToPay() {
         viewModelScope.launch {
             _trainings.collect { trainings ->
                 val unpaidTrainings = trainings.filter { !it.isPaid }
@@ -53,7 +55,7 @@ class MainViewModel(private val repository: RepositoryImpl) : ViewModel() {
         }
     }
 
-    fun getTheLastBodyMeasurements(){
+    fun getTheLastBodyMeasurements() {
         viewModelScope.launch {
             repository.getTheLastBodyMeasurements().collect { bodyMeasurements ->
                 if (bodyMeasurements != null) {
@@ -63,11 +65,11 @@ class MainViewModel(private val repository: RepositoryImpl) : ViewModel() {
         }
     }
 
-    fun bodyMeasurementIsEmpty () : Boolean {
+    fun bodyMeasurementIsEmpty(): Boolean {
         return if (_lastMeasurements.value.id == 0) true else false
     }
 
-    fun bodyWeightIsEmpty () : Boolean {
+    fun bodyWeightIsEmpty(): Boolean {
         return if (_lastWeight.value.id == 0) true else false
     }
 
@@ -77,7 +79,7 @@ class MainViewModel(private val repository: RepositoryImpl) : ViewModel() {
         }
     }
 
-    fun addWeight (weight: Weight) {
+    fun addWeight(weight: Weight) {
         viewModelScope.launch {
             repository.addWeight(weight)
         }

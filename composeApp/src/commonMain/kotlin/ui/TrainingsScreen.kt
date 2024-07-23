@@ -34,20 +34,19 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import kotlinx.datetime.LocalDate
 import org.koin.compose.viewmodel.koinViewModel
 import utils.localDateChecker
 
-class TrainingsScreen () : Screen {
+class TrainingsScreen() : Screen {
     @Composable
     override fun Content() {
         val viewModel = koinViewModel<MainViewModel>()
         val trainings = viewModel.trainings.collectAsState(initial = emptyList())
 
-        val navigator : Navigator = LocalNavigator.currentOrThrow
+        val navigator: Navigator = LocalNavigator.currentOrThrow
         Scaffold(
             topBar = { CustomTopAppBar(navigator, "Trainings") }
-        ){
+        ) {
             Column {
                 Schedule(trainings)
             }
@@ -55,8 +54,8 @@ class TrainingsScreen () : Screen {
     }
 
     @Composable
-    fun Schedule (events: State<List<Event>>) {
-        LazyColumn (modifier = Modifier.fillMaxSize())
+    fun Schedule(events: State<List<Event>>) {
+        LazyColumn(modifier = Modifier.fillMaxSize())
         {
             items(events.value) { event ->
                 Event(event)
@@ -65,9 +64,9 @@ class TrainingsScreen () : Screen {
     }
 
     @Composable
-    fun Event (
+    fun Event(
         event: Event
-    ){
+    ) {
         var isSelected by remember { mutableStateOf(false) }
         var status by remember { mutableStateOf(event.isPaid) }
         val date = localDateChecker(event.date)
@@ -81,8 +80,8 @@ class TrainingsScreen () : Screen {
                     else Color.White
                 ),
             verticalAlignment = Alignment.CenterVertically
-        ){
-            Column (
+        ) {
+            Column(
                 modifier = Modifier.weight(0.85f),
                 verticalArrangement = Arrangement.Center
             ) {
@@ -97,13 +96,15 @@ class TrainingsScreen () : Screen {
                 )
             }
 
-            if (!status) { IconButton(
-                onClick = { status = true }) {
-                    Icon(Icons.Filled.DateRange, contentDescription = "Upcoming visit" )
-            }
-                } else { IconButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Filled.Done, contentDescription = "Done")
-            }
+            if (!status) {
+                IconButton(
+                    onClick = { status = true }) {
+                    Icon(Icons.Filled.DateRange, contentDescription = "Upcoming visit")
+                }
+            } else {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(Icons.Filled.Done, contentDescription = "Done")
+                }
             }
         }
     }

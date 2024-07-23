@@ -35,17 +35,17 @@ interface TrainingsDAO {
     suspend fun deleteBodyMeasurements(bodyMeasurements: BodyMeasurements)
 
     @Query("SELECT * FROM Event")
-    fun getAllTrainings() : Flow<List<Event>>
+    fun getAllTrainings(): Flow<List<Event>>
 
     @Query("SELECT * FROM Payment")
-    fun getAllPayments() : Flow<List<Payment>>
+    fun getAllPayments(): Flow<List<Payment>>
 
     @Query("SELECT * FROM Weight")
-    fun getAllWeights() : Flow<List<Weight>>
+    fun getAllWeights(): Flow<List<Weight>>
 
     @Query("SELECT * FROM BodyMeasurements")
-    fun getAllBodyMeasurements() : Flow<List<BodyMeasurements>>
+    fun getAllBodyMeasurements(): Flow<List<BodyMeasurements>>
 
     @Query("SELECT * FROM BodyMeasurements ORDER BY id DESC LIMIT 1")
-    fun getTheLastBodyMeasurements() : Flow<BodyMeasurements?>
+    fun getTheLastBodyMeasurements(): Flow<BodyMeasurements?>
 }

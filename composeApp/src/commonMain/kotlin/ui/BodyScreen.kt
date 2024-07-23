@@ -28,17 +28,17 @@ import org.koin.compose.viewmodel.koinViewModel
 class BodyScreen : Screen {
     @Composable
     override fun Content() {
-        val navigator : Navigator = LocalNavigator.currentOrThrow
+        val navigator: Navigator = LocalNavigator.currentOrThrow
         Scaffold(
             topBar = { CustomTopAppBar(navigator, "Body") }
-        ){
+        ) {
             ScreenList()
         }
     }
 }
 
 @Composable
-fun ScreenList(){
+fun ScreenList() {
     val viewModel = koinViewModel<MainViewModel>()
     viewModel.getTheLastBodyMeasurements()
     viewModel.getTheLastWeight()
@@ -46,7 +46,7 @@ fun ScreenList(){
     val isWeightEmpty = viewModel.bodyWeightIsEmpty()
 
 
-    val onClick : () -> Unit = {/*TODO*/ }
+    val onClick: () -> Unit = {/*TODO*/ }
 
     LazyVerticalStaggeredGrid(
         modifier = Modifier.fillMaxSize(),
@@ -55,26 +55,26 @@ fun ScreenList(){
         verticalItemSpacing = 16.dp,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        if(!isWeightEmpty){
+        if (!isWeightEmpty) {
             val weight = viewModel.lastWeight.value.weight
-            item {
+            item(key = "weight") {
                 WeightElement(weight)
             }
 
         }
-        if (!isBMEmpty){
+        if (!isBMEmpty) {
             val bodyMeasurement = viewModel.lastMeasurements.value
 
-            item { SkMuscleElement(bodyMeasurement.skMuscle) }
-            item { BodyFatElement(bodyMeasurement.bodyFat) }
-            item { BmiElement(bodyMeasurement.bmi) }
-            item { BmrElement(bodyMeasurement.bmr) }
+            item(key = "skMuscle") { SkMuscleElement(bodyMeasurement.skMuscle) }
+            item(key = "bodyFat") { BodyFatElement(bodyMeasurement.bodyFat) }
+            item(key = "bmi") { BmiElement(bodyMeasurement.bmi) }
+            item(key = "bmr") { BmrElement(bodyMeasurement.bmr) }
         }
     }
 }
 
 @Composable
-fun WeightElement(weight : String){
+fun WeightElement(weight: String) {
     OutlinedCard(
         enabled = true,
         onClick = { /*TODO*/ },
@@ -105,7 +105,7 @@ fun WeightElement(weight : String){
 }
 
 @Composable
-fun SkMuscleElement(skValue: String){
+fun SkMuscleElement(skValue: String) {
     OutlinedCard(
         onClick = { /*TODO*/ },
         modifier = Modifier.size(120.dp, 120.dp),
@@ -115,7 +115,7 @@ fun SkMuscleElement(skValue: String){
                 .fillMaxSize()
                 .padding(start = 8.dp, top = 16.dp, end = 8.dp, bottom = 16.dp),
 
-            ){
+            ) {
             Text(
                 text = "Skeletal muscle",
                 style = MaterialTheme.typography.labelLarge,
@@ -144,7 +144,7 @@ fun SkMuscleElement(skValue: String){
 }
 
 @Composable
-fun BodyFatElement(bodyFatValue : String){
+fun BodyFatElement(bodyFatValue: String) {
     OutlinedCard(
         onClick = { /*TODO*/ },
         modifier = Modifier.size(120.dp, 120.dp),
@@ -154,7 +154,7 @@ fun BodyFatElement(bodyFatValue : String){
                 .fillMaxSize()
                 .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
 
-            ){
+            ) {
             Text(
                 text = "Body fat",
                 style = MaterialTheme.typography.labelLarge,
@@ -185,7 +185,7 @@ fun BodyFatElement(bodyFatValue : String){
 }
 
 @Composable
-fun BmiElement(bmiValue : String){
+fun BmiElement(bmiValue: String) {
     OutlinedCard(
         onClick = { /*TODO*/ },
         modifier = Modifier.size(120.dp, 120.dp),
@@ -226,7 +226,7 @@ fun BmiElement(bmiValue : String){
 }
 
 @Composable
-fun BmrElement(bmrValue : String) {
+fun BmrElement(bmrValue: String) {
     OutlinedCard(
         onClick = { /*TODO*/ },
         modifier = Modifier.size(120.dp, 120.dp),

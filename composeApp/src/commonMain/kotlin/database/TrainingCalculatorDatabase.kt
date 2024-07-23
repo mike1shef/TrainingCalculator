@@ -10,8 +10,9 @@ import database.model.Weight
 
 @Database(
     entities = [Event::class, Payment::class, BodyMeasurements::class, Weight::class],
-    version = 1)
+    version = 1
+)
 @TypeConverters(Converters::class)
 abstract class TrainingCalculatorDatabase : RoomDatabase() {
-    abstract fun trainingsDAO() : TrainingsDAO
+    abstract fun trainingsDAO(): TrainingsDAO
 }

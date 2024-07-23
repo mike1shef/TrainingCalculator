@@ -49,7 +49,7 @@ class AddBodyMeasurementScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        Scaffold (
+        Scaffold(
             topBar = { CustomTopAppBar(navigator = navigator, title = "Add body measurement") }
         ) {
             AddMeasurement(navigator = navigator)
@@ -57,7 +57,7 @@ class AddBodyMeasurementScreen : Screen {
     }
 
     @Composable
-    fun AddMeasurement(navigator: Navigator){
+    fun AddMeasurement(navigator: Navigator) {
         val currentDate = getCurrentDate()
         val viewModel = koinViewModel<MainViewModel>()
         var showFullData by remember { mutableStateOf(false) }
@@ -66,7 +66,8 @@ class AddBodyMeasurementScreen : Screen {
         val selectedDate = remember { mutableStateOf(currentDate) }
         val openDialog = remember { mutableStateOf(false) }
 
-        val listOfMeasurements = remember { mutableStateListOf<String>("", "", "", "") } // Store measurements
+        val listOfMeasurements =
+            remember { mutableStateListOf<String>("", "", "", "") } // Store measurements
 
         Column(
             Modifier.padding(16.dp),
@@ -79,14 +80,14 @@ class AddBodyMeasurementScreen : Screen {
             ) {
                 OutlinedTextField(
                     value = weight,
-                    onValueChange = { weight = it},
-                    label = {Text("weight")},
+                    onValueChange = { weight = it },
+                    label = { Text("weight") },
                     modifier = Modifier.weight(0.5f),
                     maxLines = 1,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 )
 
-                Column (
+                Column(
                     modifier = Modifier
                         .weight(0.5f)
                         .padding(start = 16.dp),
@@ -134,7 +135,7 @@ class AddBodyMeasurementScreen : Screen {
                 TextButton(
                     modifier = Modifier
                         .weight(0.5f),
-                    onClick = { openDialog.value = true}
+                    onClick = { openDialog.value = true }
                 ) {
                     val text = localDateChecker(selectedDate.value)
                     Text(text)
@@ -147,7 +148,7 @@ class AddBodyMeasurementScreen : Screen {
                 onClick = {
                     val weight = Weight(weight = weight, date = selectedDate.value)
 
-                    if (showFullData){
+                    if (showFullData) {
                         val bodyMeasurement = createBodyMeasurement(
                             additionalMeasurements = listOfMeasurements,
                             date = selectedDate.value
@@ -171,30 +172,31 @@ class AddBodyMeasurementScreen : Screen {
     }
 
     @Composable
-    fun ShowFullData (
+    fun ShowFullData(
         list: List<String>,
         listToRemember: MutableList<String>,
         onValueChange: (Int, String) -> Unit
-    ){
+    ) {
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Fixed(2),
             verticalItemSpacing = 8.dp,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-                items(list.size) { index ->
-                    Measurement(text = list[index],
-                        value = listToRemember[index]) {
-                        newValue ->
-                        onValueChange(index, newValue)
-                    }
+            items(list.size) { index ->
+                Measurement(
+                    text = list[index],
+                    value = listToRemember[index]
+                ) { newValue ->
+                    onValueChange(index, newValue)
                 }
+            }
         }
     }
 
-    private val allMeasurements  = listOf("skMuscle", "bodyFat %", "BMI","BMR")
+    private val allMeasurements = listOf("skMuscle", "bodyFat %", "BMI", "BMR")
 
     @Composable
-    fun Measurement (text : String, value : String, onValueChange: (String) -> Unit){
+    fun Measurement(text: String, value: String, onValueChange: (String) -> Unit) {
         OutlinedTextField(
             value = value,
             label = { Text(text) },
@@ -205,7 +207,7 @@ class AddBodyMeasurementScreen : Screen {
     }
 }
 
-fun createBodyMeasurement( additionalMeasurements : List<String>, date : LocalDate) : BodyMeasurements{
+fun createBodyMeasurement(additionalMeasurements: List<String>, date: LocalDate): BodyMeasurements {
     return BodyMeasurements(
         skMuscle = additionalMeasurements[0],
         bodyFat = additionalMeasurements[1],
@@ -215,7 +217,7 @@ fun createBodyMeasurement( additionalMeasurements : List<String>, date : LocalDa
     )
 }
 
-fun checkAvailability (weight : String, bodyMeasurements : List<String>, showData : Boolean): Boolean{
+fun checkAvailability(weight: String, bodyMeasurements: List<String>, showData: Boolean): Boolean {
     return if (showData) {
         bodyMeasurements.all { it.isNotBlank() }
     } else {

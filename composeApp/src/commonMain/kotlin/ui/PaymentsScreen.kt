@@ -22,10 +22,13 @@ class PaymentsScreen : Screen {
         val valueToPay by viewModel.valueToPay.collectAsState()
 
         Scaffold(
-            topBar = {CustomTopAppBar(navigator, "Payments")}
-        ) {paddingValues ->
-            Box { Text(
-                text = "$valueToPay") }
+            topBar = { CustomTopAppBar(navigator, "Payments") }
+        ) { paddingValues ->
+            Box {
+                Text(
+                    text = "$valueToPay"
+                )
+            }
         }
     }
 }
