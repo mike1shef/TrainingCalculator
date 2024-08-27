@@ -67,18 +67,19 @@ class TrainingsScreen() : Screen {
     fun Event(
         event: Event
     ) {
-        var isSelected by remember { mutableStateOf(false) }
+//        var isSelected by remember { mutableStateOf(false) }
         var status by remember { mutableStateOf(event.isPaid) }
         val date = localDateChecker(event.date)
 
         Row(
             Modifier
                 .padding(horizontal = 12.dp, vertical = 8.dp)
-                .clickable { isSelected = !isSelected }
-                .background(
-                    if (isSelected) Color(0xFFE0E0E0)
-                    else Color.White
-                ),
+                //.clickable { isSelected = !isSelected }
+//                .background(
+//                    if (isSelected) Color(0xFFE0E0E0)
+//                    else Color.White
+//                )
+                ,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
@@ -97,14 +98,9 @@ class TrainingsScreen() : Screen {
             }
 
             if (!status) {
-                IconButton(
-                    onClick = { status = true }) {
-                    Icon(Icons.Filled.DateRange, contentDescription = "Upcoming visit")
-                }
+                Icon(Icons.Filled.DateRange, contentDescription = "Upcoming visit")
             } else {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(Icons.Filled.Done, contentDescription = "Done")
-                }
+                Icon(Icons.Filled.Done, contentDescription = "Done")
             }
         }
     }

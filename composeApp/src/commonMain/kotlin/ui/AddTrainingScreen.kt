@@ -12,17 +12,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import kotlinx.datetime.*
 import androidx.compose.material3.Button
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,7 +29,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import database.model.Event
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
+import utils.getCurrentDate
 import utils.localDateChecker
 
 class AddTrainingScreen : Screen {
@@ -47,8 +41,7 @@ class AddTrainingScreen : Screen {
         Scaffold(
             topBar = { CustomTopAppBar(navigator = navigator, title = "Add training") }
         ) {
-            val now: Instant = Clock.System.now()
-            val nowDate: LocalDate = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
+            val nowDate: LocalDate = getCurrentDate()
             val selectedDate = remember { mutableStateOf(nowDate) }
             val openDialog = remember { mutableStateOf(false) }
             var isPaid by remember { mutableStateOf(false) }

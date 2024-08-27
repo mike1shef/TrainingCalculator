@@ -9,6 +9,7 @@ data class Payment(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     var amount: Double,
+    //var trainings : List<String>,
     val date: LocalDate
 )
 

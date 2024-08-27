@@ -40,13 +40,10 @@ class BodyScreen : Screen {
 @Composable
 fun ScreenList() {
     val viewModel = koinViewModel<MainViewModel>()
-    viewModel.getTheLastBodyMeasurements()
-    viewModel.getTheLastWeight()
+//    viewModel.getTheLastBodyMeasurements()
+//    viewModel.getTheLastWeight()
     val isBMEmpty = viewModel.bodyMeasurementIsEmpty()
     val isWeightEmpty = viewModel.bodyWeightIsEmpty()
-
-
-    val onClick: () -> Unit = {/*TODO*/ }
 
     LazyVerticalStaggeredGrid(
         modifier = Modifier.fillMaxSize(),
@@ -60,7 +57,6 @@ fun ScreenList() {
             item(key = "weight") {
                 WeightElement(weight)
             }
-
         }
         if (!isBMEmpty) {
             val bodyMeasurement = viewModel.lastMeasurements.value
@@ -75,9 +71,10 @@ fun ScreenList() {
 
 @Composable
 fun WeightElement(weight: String) {
+    val navigator = LocalNavigator.currentOrThrow
     OutlinedCard(
         enabled = true,
-        onClick = { /*TODO*/ },
+        onClick = { navigator.push(WeightScreen()) },
         modifier = Modifier.size(120.dp, 256.dp),
     ) {
         Box(
@@ -123,7 +120,9 @@ fun SkMuscleElement(skValue: String) {
                 color = MaterialTheme.colorScheme.secondary
             )
             Row(
-                modifier = Modifier.align(Alignment.Center).fillMaxWidth(),
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -215,7 +214,7 @@ fun BmiElement(bmiValue: String) {
                 )
 
                 Text(
-                    text = "km/m",
+                    text = "kg/m",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
                     modifier = Modifier.padding(start = 8.dp),

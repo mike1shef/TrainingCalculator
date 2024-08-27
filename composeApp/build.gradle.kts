@@ -113,5 +113,7 @@ room {
 dependencies {
     implementation(libs.places)
     implementation(libs.androidx.core.i18n)
+    implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.ui.text.google.fonts)
     ksp(libs.room.compiler)
 }

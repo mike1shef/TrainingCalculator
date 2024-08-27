@@ -71,7 +71,7 @@ class MainScreen() : Screen {
         OutlinedCard(modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp)
             .clickable {
                 when (text) {
-                    "Trainings" -> navigator.push(TrainingsScreen())
+                    "GYM" -> navigator.push(TrainingsScreen())
                     "Body" -> navigator.push(BodyScreen())
                     "Payments" -> navigator.push(PaymentsScreen())
                 }
@@ -103,7 +103,7 @@ class MainScreen() : Screen {
                 modifier = Modifier.padding(12.dp).size(width = 180.dp, height = 48.dp)
 
             ) {
-                IconButton(modifier = Modifier.weight(0.33f).size(36.dp), onClick = {
+                IconButton(modifier = Modifier.weight(0.5f).size(36.dp), onClick = {
                     navigator.push(AddTrainingScreen())
                 }) {
                     Icon(
@@ -111,18 +111,12 @@ class MainScreen() : Screen {
                         contentDescription = "Add training"
                     )
                 }
-                IconButton(modifier = Modifier.weight(0.33f).size(36.dp), onClick = {
+                IconButton(modifier = Modifier.weight(0.5f).size(36.dp), onClick = {
                     navigator.push(AddBodyMeasurementScreen())
                 }) {
                     Icon(
                         painterResource(Res.drawable.straighten_24px),
                         contentDescription = "Add measurement"
-                    )
-                }
-                IconButton(modifier = Modifier.weight(0.33f).size(36.dp), onClick = {}) {
-                    Icon(
-                        painterResource(Res.drawable.payments_24px),
-                        contentDescription = "Add payment"
                     )
                 }
             }
